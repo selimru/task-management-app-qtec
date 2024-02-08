@@ -1,9 +1,23 @@
+import { createContext, useEffect, useState } from "react";
 
-const TaskContext = () => {
+
+export const TaskContextProvider = createContext(null)
+const TaskContext = ({ children }) => {
+    const [tasks, setTasks] = useState([])
+    console.log(tasks);
+    useEffect(() => {
+        const allTask = JSON.parse(localStorage.getItem('tasks'))
+        setTasks(allTask)
+    }, [])
+
+    const value = {
+        tasks,
+        setTasks
+    }
     return (
-        <div>
-
-        </div>
+        <TaskContextProvider.Provider value={value}>
+            {children}
+        </TaskContextProvider.Provider>
     );
 };
 

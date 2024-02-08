@@ -1,6 +1,6 @@
 
+import { Outlet } from 'react-router-dom'
 import './App.css'
-import TaskList from './components/TaskList/TaskList'
 
 function App() {
 
@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <div className='max-w-6xl mx-auto'>
-        <TaskList />
+        <Outlet />
       </div>
     </>
   )
