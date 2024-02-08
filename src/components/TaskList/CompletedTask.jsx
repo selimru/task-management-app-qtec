@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import { TaskContextProvider } from "../../TaskContext/TaskContext";
+import { Link } from "react-router-dom";
+import EditButton from "./EditButton";
 
 const CompletedTask = ({ task }) => {
     const { tasks, setTasks } = useContext(TaskContextProvider)
-    const { taskName, priority, id } = task
+    const { taskName, priority, id, status } = task
 
     const handleDeleteTask = () => {
         const deleteTask = tasks.filter(task => task.id !== id)
@@ -19,7 +21,9 @@ const CompletedTask = ({ task }) => {
             </div >
             <div className=" flex justify-evenly mt-3">
                 <button onClick={handleDeleteTask}>Delete</button>
-                <button>Edit</button>
+                <button>
+                    <EditButton id={id} status={status} taskName={taskName} priority={priority} />
+                </button>
             </div>
         </div>
     );

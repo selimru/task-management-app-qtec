@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
+import { TaskContextProvider } from "../../TaskContext/TaskContext";
 const AddTask = () => {
     const [taskName, setTaskName] = useState('')
     const [priority, setPriority] = useState('')
     const [status, setStatus] = useState('')
-    const navigate = useNavigate()
+    const { tasks, setTasks } = useContext(TaskContextProvider)
 
     const handleAddTask = (e) => {
         e.preventDefault()
@@ -31,9 +32,8 @@ const AddTask = () => {
             const storedTasks = JSON.parse(localStorage.getItem('tasks')) || []
             const updatedTasks = [...storedTasks, taskData];
             localStorage.setItem('tasks', JSON.stringify(updatedTasks))
-            navigate('/')
             e.target.reset();
-
+            setTasks(updatedTasks)
         }
 
     }
@@ -49,8 +49,8 @@ const AddTask = () => {
                         <div className=" flex justify-evenly items-center">
                             <select onChange={(e) => setStatus(e.target.value)} value={status}>
                                 <option disabled value="">Select Status</option>
-                                <option value="completed">Completed</option>
-                                <option value="incomplete">Incomplete</option>
+                                <option value={true}>Completed</option>
+                                <option value={false}>Incomplete</option>
                             </select>
                             <select onChange={(e) => setPriority(e.target.value)} value={priority}>
                                 <option disabled value="">Select Priority</option>

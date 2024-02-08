@@ -2,13 +2,14 @@ import { useContext } from "react";
 import { TaskContextProvider } from "../../TaskContext/TaskContext";
 import CompletedTask from "./CompletedTask";
 import AddButton from "./AddButton";
+import IncompleteTask from "./IncompleteTask";
 // import SingleTask from "./SingleTask";
 
 const TaskList = () => {
     const { tasks } = useContext(TaskContextProvider)
     const taskTitles = ['Completed task', 'Incompleted Task']
-    const completedTask = tasks?.filter(task => task.status === 'completed')
-    const incompleteTask = tasks?.filter(task => task.status === 'incomplete')
+    const completedTask = tasks?.filter(task => task.status === 'true')
+    const incompleteTask = tasks?.filter(task => task.status === 'false')
     return (
         <div>
             <div className=" flex items-center justify-evenly mt-10">
@@ -31,7 +32,7 @@ const TaskList = () => {
                 </div>
                 <div>
                     {
-                        incompleteTask?.map((task) => < CompletedTask
+                        incompleteTask?.map((task) => < IncompleteTask
                             key={task.id}
                             task={task}
                         />)

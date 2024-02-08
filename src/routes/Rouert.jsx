@@ -18,7 +18,7 @@ export const router = createBrowserRouter([
                 element: <AddTask />
             },
             {
-                path: '/updateTask',
+                path: '/updateTask/:id',
                 element: <UpdateTask />
             }
         ]
