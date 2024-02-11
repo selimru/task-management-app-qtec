@@ -1,32 +1,29 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 import { TaskContextProvider } from "../../TaskContext/TaskContext";
 const AddTask = () => {
     const [taskName, setTaskName] = useState('')
     const [priority, setPriority] = useState('')
-    const [status, setStatus] = useState('')
-    const { tasks, setTasks } = useContext(TaskContextProvider)
+    const [status, setStatus] = useState(false)
+    const { setTasks, isEditing } = useContext(TaskContextProvider)
+
 
     const handleAddTask = (e) => {
         e.preventDefault()
         setTaskName('')
         setPriority('')
-        setStatus('')
         if (!taskName) {
             return alert('please input task')
         }
-        if (!priority) {
+        else if (!priority) {
             return alert('please input priority')
-        }
-        if (!status) {
-            return alert('please input status')
         } else {
             const taskData = {
                 id: uuidv4(),
                 taskName: taskName,
                 priority: priority,
-                status: status
+                status: status,
+                isEditing: isEditing
             }
 
             const storedTasks = JSON.parse(localStorage.getItem('tasks')) || []
@@ -39,20 +36,19 @@ const AddTask = () => {
     }
     return (
         <div >
-            <Link to='/'>Back Task List</Link>
-            <div className=" w-[60%] mx-auto bg-slate-100 mt-10 py-5">
+            <div className="mx-auto bg-white py-5">
                 <form onSubmit={handleAddTask}>
                     <div className="space-y-10">
                         <div className=" flex justify-center">
-                            <input onChange={(e) => setTaskName(e.target.value)} type="text" name="" id="" />
+                            <input className="border border-gray-500 p-3 rounded-md" onChange={(e) => setTaskName(e.target.value)} type="text" name="" id="" placeholder="Input task" />
                         </div>
                         <div className=" flex justify-evenly items-center">
-                            <select onChange={(e) => setStatus(e.target.value)} value={status}>
+                            {/* <select className="bg-gray-200 p-3 rounded-md text-gray-500" onChange={(e) => setStatus(e.target.value)} value={status}>
                                 <option disabled value="">Select Status</option>
                                 <option value={true}>Completed</option>
                                 <option value={false}>Incomplete</option>
-                            </select>
-                            <select onChange={(e) => setPriority(e.target.value)} value={priority}>
+                            </select> */}
+                            <select className="bg-gray-200 p-3 rounded-md text-gray-500" onChange={(e) => setPriority(e.target.value)} value={priority}>
                                 <option disabled value="">Select Priority</option>
                                 <option value="low">Low</option>
                                 <option value="medium">Medium</option>
@@ -60,7 +56,7 @@ const AddTask = () => {
                             </select>
                         </div>
                         <div className=" flex justify-center">
-                            <button type="submit">Add Task</button>
+                            <button className="bg-gray-300 px-5 py-2 rounded-md hover:text-white" type="submit">Add Task</button>
                         </div>
                     </div>
                 </form>
