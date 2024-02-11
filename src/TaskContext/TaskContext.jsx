@@ -1,18 +1,19 @@
 import { createContext, useEffect, useState } from "react";
 
-
 export const TaskContextProvider = createContext(null)
 const TaskContext = ({ children }) => {
     const [loading, setLoading] = useState(true)
     const [tasks, setTasks] = useState([])
     const [isEditing, setIsEditing] = useState(false);
 
+    // task fetching from local storage
     useEffect(() => {
         const allTask = JSON.parse(localStorage.getItem('tasks'))
         setTasks(allTask)
         setLoading(false)
     }, [])
 
+    // toggle function for complettion task or not
     const toggleTask = (taskId) => {
         setTasks((prevTasks) =>
             prevTasks.map((task) =>
@@ -21,6 +22,7 @@ const TaskContext = ({ children }) => {
         );
     };
 
+    // task edit function
     const handleEditTask = (taskId, newText, pri) => {
         setTasks((prevTasks) =>
             prevTasks.map((task) =>
@@ -29,6 +31,7 @@ const TaskContext = ({ children }) => {
         );
     };
 
+    // context values
     const value = {
         loading,
         tasks,

@@ -2,17 +2,16 @@ import { useContext, useEffect, useState } from "react";
 import { TaskContextProvider } from "../../TaskContext/TaskContext";
 import AddButton from "./AddButton";
 import SingleTask from "./SingleTask";
-import UpdateTask from "../UpdateTask/UpdateTask";
 
 const TaskList = () => {
     const { tasks, loading, isEditing, setIsEditing } = useContext(TaskContextProvider)
     const [filteredTasks, setFilteredTasks] = useState([])
     const [filteredPriority, setFilteredPriority] = useState('')
-    console.log(filteredTasks);
+
     // completed tasks filtered by status
     const completedTask = tasks?.filter(task => task.status)
 
-    // tasks data 
+    // tasks data set handling asyncronously
     useEffect(() => {
         setFilteredTasks(tasks);
     }, [tasks]);
@@ -52,7 +51,6 @@ const TaskList = () => {
                             filteredTasks?.map((task) => < SingleTask
                                 key={task.id}
                                 task={task}
-                            // handleEdit={handleEdit}
                             />)
                         }
 

@@ -5,9 +5,10 @@ const AddTask = () => {
     const [taskName, setTaskName] = useState('')
     const [priority, setPriority] = useState('')
     const [status, setStatus] = useState(false)
+    // context data
     const { setTasks, isEditing } = useContext(TaskContextProvider)
 
-
+    // task add function
     const handleAddTask = (e) => {
         e.preventDefault()
         setTaskName('')
@@ -25,7 +26,7 @@ const AddTask = () => {
                 status: status,
                 isEditing: isEditing
             }
-
+            // task data storing in local storage and set
             const storedTasks = JSON.parse(localStorage.getItem('tasks')) || []
             const updatedTasks = [...storedTasks, taskData];
             localStorage.setItem('tasks', JSON.stringify(updatedTasks))
@@ -43,11 +44,6 @@ const AddTask = () => {
                             <input className="border border-gray-500 p-3 rounded-md" onChange={(e) => setTaskName(e.target.value)} type="text" name="" id="" placeholder="Input task" />
                         </div>
                         <div className=" flex justify-evenly items-center">
-                            {/* <select className="bg-gray-200 p-3 rounded-md text-gray-500" onChange={(e) => setStatus(e.target.value)} value={status}>
-                                <option disabled value="">Select Status</option>
-                                <option value={true}>Completed</option>
-                                <option value={false}>Incomplete</option>
-                            </select> */}
                             <select className="bg-gray-200 p-3 rounded-md text-gray-500" onChange={(e) => setPriority(e.target.value)} value={priority}>
                                 <option disabled value="">Select Priority</option>
                                 <option value="low">Low</option>

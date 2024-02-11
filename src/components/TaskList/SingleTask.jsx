@@ -8,6 +8,7 @@ const SingleTask = ({ task }) => {
     const { setIsEditing, toggleTask, setTasks, isEditing } = useContext(TaskContextProvider)
     const { taskName, priority, id, status } = task
 
+    // handle delete task
     const handleDeleteTask = () => {
         const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
         const updatedTasks = storedTasks.filter((task) => task.id !== id);
@@ -15,7 +16,7 @@ const SingleTask = ({ task }) => {
         setTasks(updatedTasks)
     }
 
-
+    // handle for editing if edit is needed
     const handleEdit = () => {
         setIsEditing(true);
         console.log(isEditing);
