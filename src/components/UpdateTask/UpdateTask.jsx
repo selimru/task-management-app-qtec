@@ -3,14 +3,12 @@ import { TaskContextProvider } from "../../TaskContext/TaskContext";
 const UpdateTask = ({ taskName, priority, id }) => {
     const [updateTaskName, setUpdateTaskName] = useState(taskName)
     const [updatePriority, setUpdatePriority] = useState(priority)
-    const { handleEditTask, setIsEditing } = useContext(TaskContextProvider)
+    const { handleEditTask } = useContext(TaskContextProvider)
 
 
     const handleSave = (e) => {
         e.preventDefault()
         handleEditTask(id, updateTaskName, updatePriority);
-        setIsEditing(false);
-        console.log(id);
     };
     return (
         <div >

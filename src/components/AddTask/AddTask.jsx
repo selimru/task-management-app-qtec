@@ -4,47 +4,28 @@ import { TaskContextProvider } from "../../TaskContext/TaskContext";
 const AddTask = () => {
     const [taskName, setTaskName] = useState('')
     const [priority, setPriority] = useState('')
-    const [status, setStatus] = useState(false)
+
     // context data
-    const { setTasks, isEditing } = useContext(TaskContextProvider)
+    const { handleAddTask } = useContext(TaskContextProvider)
 
-    // task add function
-    const handleAddTask = (e) => {
-        e.preventDefault()
-        setTaskName('')
-        setPriority('')
-        if (!taskName) {
-            return alert('please input task')
-        }
-        else if (!priority) {
-            return alert('please input priority')
-        } else {
-            const taskData = {
-                id: uuidv4(),
-                taskName: taskName,
-                priority: priority,
-                status: status,
-                isEditing: isEditing
-            }
-            // task data storing in local storage and set
-            const storedTasks = JSON.parse(localStorage.getItem('tasks')) || []
-            const updatedTasks = [...storedTasks, taskData];
-            localStorage.setItem('tasks', JSON.stringify(updatedTasks))
-            e.target.reset();
-            setTasks(updatedTasks)
-        }
-
+    const taskData = {
+        id: uuidv4(),
+        taskName: taskName,
+        priority: priority,
+        status: false,
+        isEditing: false
     }
+    
     return (
         <div >
             <div className="mx-auto bg-white py-5">
-                <form onSubmit={handleAddTask}>
+                <form onSubmit={() => handleAddTask(taskData)}>
                     <div className="space-y-10">
                         <div className=" flex justify-center">
-                            <input className="border border-gray-500 p-3 rounded-md" onChange={(e) => setTaskName(e.target.value)} type="text" name="" id="" placeholder="Input task" />
+                            <input className="border border-gray-500 p-3 rounded-md" onChange={(e) => setTaskName(e.target.value)} type="text" name="" id="" placeholder="Input task" required />
                         </div>
                         <div className=" flex justify-evenly items-center">
-                            <select className="bg-gray-200 p-3 rounded-md text-gray-500" onChange={(e) => setPriority(e.target.value)} value={priority}>
+                            <select className="bg-gray-200 p-3 rounded-md text-gray-500" onChange={(e) => setPriority(e.target.value)} value={priority} required>
                                 <option disabled value="">Select Priority</option>
                                 <option value="low">Low</option>
                                 <option value="medium">Medium</option>

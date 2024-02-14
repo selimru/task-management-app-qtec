@@ -4,7 +4,6 @@ export const TaskContextProvider = createContext(null)
 const TaskContext = ({ children }) => {
     const [loading, setLoading] = useState(true)
     const [tasks, setTasks] = useState([])
-    const [isEditing, setIsEditing] = useState(false);
 
     // task fetching from local storage
     useEffect(() => {
@@ -13,7 +12,15 @@ const TaskContext = ({ children }) => {
         setLoading(false)
     }, [])
 
-    // toggle function for complettion task or not
+    // Task add function
+    const handleAddTask = (task) => {
+        // task data storing in local storage and set
+        const storedTasks = JSON.parse(localStorage.getItem('tasks')) || []
+        const updatedTasks = [...storedTasks, task];
+        localStorage.setItem('tasks', JSON.stringify(updatedTasks))
+        e.target.reset();
+        setTasks(updatedTasks)
+    };
     const toggleTask = (taskId) => {
         setTasks((prevTasks) =>
             prevTasks.map((task) =>
@@ -22,24 +29,43 @@ const TaskContext = ({ children }) => {
         );
     };
 
-    // task edit function
-    const handleEditTask = (taskId, newText, pri) => {
-        setTasks((prevTasks) =>
-            prevTasks.map((task) =>
-                task.id === taskId ? { ...task, taskName: newText, priority: pri } : task
-            )
-        );
+    const handleEdit = (id) => {
+        setTasks(tasks.map(task => task.id === id ? { ...task, isEditing: !task.isEditing } : task))
     };
 
+    // task edit function
+    const handleEditTask = (taskId, taskName, priority) => {
+        const updatedTasks = tasks.map(task =>
+            task.id === taskId ?
+                { ...task, taskName, priority, isEditing: !task.isEditing }
+                :
+                task
+        );
+        setTasks(updatedTasks)
+        const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        const updatedStoredTasks = storedTasks.map(task =>
+            task.id === taskId ?
+                { ...task, taskName, priority }
+                :
+                task
+        );
+        localStorage.setItem('tasks', JSON.stringify(updatedStoredTasks));
+    };
+
+    // delete
+    const handleDeleteTask = (id) => {
+        setTasks(tasks.filter(task => task.id !== id))
+    }
     // context values
     const value = {
         loading,
         tasks,
         setTasks,
+        handleAddTask,
         toggleTask,
         handleEditTask,
-        isEditing,
-        setIsEditing
+        handleEdit,
+        handleDeleteTask
 
     }
     return (

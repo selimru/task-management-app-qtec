@@ -2,16 +2,17 @@ import { useContext, useEffect, useState } from "react";
 import { TaskContextProvider } from "../../TaskContext/TaskContext";
 import AddButton from "./AddButton";
 import SingleTask from "./SingleTask";
+import UpdateTask from "../UpdateTask/UpdateTask";
 
 const TaskList = () => {
-    const { tasks, loading, isEditing, setIsEditing } = useContext(TaskContextProvider)
+    const { tasks, loading } = useContext(TaskContextProvider)
     const [filteredTasks, setFilteredTasks] = useState([])
     const [filteredPriority, setFilteredPriority] = useState('')
 
     // completed tasks filtered by status
-    const completedTask = tasks?.filter(task => task.status)
+    const completedTask = filteredTasks?.filter(task => task.status)
 
-    // tasks data set handling asyncronously
+    // tasks data set handling asyncronouslys
     useEffect(() => {
         setFilteredTasks(tasks);
     }, [tasks]);
@@ -48,10 +49,17 @@ const TaskList = () => {
                     :
                     <div className=" flex justify-between flex-col items-center gap-5">
                         {
-                            filteredTasks?.map((task) => < SingleTask
-                                key={task.id}
-                                task={task}
-                            />)
+                            filteredTasks?.map((task) => task.isEditing ?
+                                <UpdateTask
+                                    key={task.id}
+                                    taskName={task.taskName}
+                                    id={task.id}
+                                    priority={task.priority} />
+                                :
+                                < SingleTask
+                                    key={task.id}
+                                    task={task}
+                                />)
                         }
 
                     </div>
