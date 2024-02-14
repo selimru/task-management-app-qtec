@@ -14,6 +14,7 @@ const TaskContext = ({ children }) => {
 
     // Task add function
     const handleAddTask = (task) => {
+
         // task data storing in local storage and set
         const storedTasks = JSON.parse(localStorage.getItem('tasks')) || []
         const updatedTasks = [...storedTasks, task];
@@ -21,12 +22,23 @@ const TaskContext = ({ children }) => {
         e.target.reset();
         setTasks(updatedTasks)
     };
+
+    // toggle function completed task or not completed task
     const toggleTask = (taskId) => {
-        setTasks((prevTasks) =>
-            prevTasks.map((task) =>
-                task.id === taskId ? { ...task, status: !task.status } : task
-            )
+        const incompleteTask = tasks.map((task) =>
+            task.id === taskId ? { ...task, status: !task.status } : task
         );
+        if (incompleteTask) {
+            setTasks(incompleteTask)
+            const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            const updatedStoredTasks = storedTasks.map(task =>
+                task.id === taskId ?
+                    { ...task, status: !task.status }
+                    :
+                    task
+            );
+            localStorage.setItem('tasks', JSON.stringify(updatedStoredTasks));
+        }
     };
 
     const handleEdit = (id) => {
@@ -54,8 +66,13 @@ const TaskContext = ({ children }) => {
 
     // delete
     const handleDeleteTask = (id) => {
-        setTasks(tasks.filter(task => task.id !== id))
+        const storedTasks = JSON.parse(localStorage.getItem('tasks')) || []
+        const updatedStoredTasks = storedTasks.filter(task =>
+            task.id !== id)
+        setTasks(updatedStoredTasks)
+        localStorage.setItem('tasks', JSON.stringify(updatedStoredTasks));
     }
+
     // context values
     const value = {
         loading,
